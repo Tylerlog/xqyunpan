@@ -15,7 +15,13 @@ from app02.py import zip
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    if request.session.get("login"):
+        user_obj = User.objects.filter(name=request.session.get("name")).first()
+        user_info = {"id":user_obj.id}
+        print(user_info)
+        return render(request, 'home.html')
+    else:
+        return render(request,"login.html")
 # 所有文件
 def all(request):
     return render(request, 'home.html')
