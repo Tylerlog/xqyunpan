@@ -21,6 +21,6 @@ urlpatterns = [
     url(r"^admins/",include('admins.urls')),
     url(r'^home/', include('app02.urls')),
 
-    # url(r'^', views.error),
+    url(r'^', views.error),
     url(r'^admin/', admin.site.urls),
 ]

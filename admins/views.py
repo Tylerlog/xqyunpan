@@ -69,7 +69,7 @@ def textname(request):
         return render(request,"error.html")
     elif request.method == "POST":
         if request.POST.get("type") == "phone":
-            user_obj = models.User.objects.filter(height=request.POST.get("phone"))
+            user_obj = models.UserInfo.objects.filter(cellphone=request.POST.get("cellphone"))
             if user_obj:
                 res = {"flag":0,"msg":"当前手机号已注册！"}
             else:
@@ -101,6 +101,7 @@ def get_cell_yzm(request):
             res = {"flag": 0, "msg": "手机号不合法！请重新输入！"}
         else:
             num_str = common.create_yzm()
+            print('123',num_str)
             result = common.msm(phone,num_str)
             res = {"flag":1,"phone":phone,"yzm":num_str}
         return JsonResponse(res)

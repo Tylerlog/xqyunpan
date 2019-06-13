@@ -1,5 +1,10 @@
 {% extends 'home.html' %}
 
+{% block page-css %}
+<link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
+
+{% endblock %}
+
 {% block content %}
     <fieldset class="">
         <legend style="margin-left: 100px">个人资料修改</legend>
@@ -77,6 +82,8 @@
 
 {% endblock %}
 {% block page-js %}
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+
 <script>
 
     $("#dd1").on("click",function () {
@@ -95,7 +102,6 @@
 
 </script>
 {% endblock %}
-
 
 
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->

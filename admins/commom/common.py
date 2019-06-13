@@ -42,3 +42,5 @@ def msm(phone, number):
         return False
     return True
 
+
+print(msm('15536582917', '213123'))
