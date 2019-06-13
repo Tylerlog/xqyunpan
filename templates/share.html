@@ -1,0 +1,55 @@
+{% extends 'home.html' %}
+{% block left %}
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">我的文件</a>
+                    <dl class="layui-nav-child">
+
+                        <dd><a href="/home/all" id="all">所有文件</a></dd>
+                        <dd><a href="/home/pic" id="pic">图片</a></dd>
+                        <dd><a href="/home/doc" id="doc">文档</a></dd>
+                        <dd><a href="/home/video" id="video">视频</a></dd>
+                        <dd><a href="/home/music" id="music">音乐</a></dd>
+                        <dd><a href="/home/rests" id="rests">其他</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item"><a href="/home/share" class="layui-this">我的分享</a></li>
+                <li class="layui-nav-item"><a href="">容量</a>
+                </li>
+            </ul>
+            <div class="layui-progress" lay-showpercent="true" style="top: 10px;">
+                <div class="layui-progress-bar" lay-percent="80%"></div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    &emsp;
+    &emsp;
+    <button class="layui-btn" id="share_cancel_all"><i class="fa fa-close"></i> 取消分享</button>
+   &emsp;&emsp;&emsp;&emsp;
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload" id="seek">搜索分享名</button>
+    <div class="layui-form-item " pane="">
+    </div>
+    <table class="layui-hide " id="share" lay-filter="user"></table>
+
+
+{% endblock %}
+
+{% block page-js %}
+<script src="/static/js/share.js"></script>
+{% endblock %}
