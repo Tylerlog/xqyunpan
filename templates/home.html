@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>小强云盘</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/sweetalert-1.1.3/sweetalert.min.js"></script>
+{% block page-css %}
+
+{% endblock %}
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    {% block top-title %}
+    <div class="layui-header">
+        <div class="layui-logo"><img src="/static/img/xiaoqiangyun.png" class="img"></div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+
+        
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/static/img/RCzsdCq.jpg" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+    {% endblock %}
+{% block left %}
+
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">所有文件</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">图片</a></dd>
+                        <dd><a href="javascript:;">文档</a></dd>
+                        <dd><a href="javascript:;">视频</a></dd>
+                        <dd><a href="javascript:;">音乐</a></dd>
+                        <dd><a href="javascript:;">其他</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item"><a href="">我的分享</a></li>
+                <li class="layui-nav-item"><a href="">回收站</a></li>
+                <li class="layui-nav-item"><a href="">容量</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+{% endblock %}
+    <a href="" download id="url" style="display:none"></a>
+{% block main-body %}
+
+
+    <div class="layui-body demoTable" id="layerDemo">
+        <blockquote class="layui-elem-quote layui-text">
+            于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里，没有早一步，也没有晚一步，刚巧赶上了，那也没有别的话可说，惟有轻轻地问一声。
+        </blockquote>
+    {% block content %}
+
+
+        &emsp;&emsp;&emsp;<button class="layui-btn" data-method="offset" data-type="auto"><i
+            class="layui-icon">&#xe67c;</i> 上传文件
+    </button>
+        &emsp;<button class="layui-btn" id="download"> <i class="layui-icon">&#xe601;</i> 下载选中</button>
+        &emsp;<button class="layui-btn" id="download"> <i class="layui-icon">&#xe601;</i> 新建文件夹</button>
+
+        &emsp;<button class="layui-btn" id="del"><i class="layui-icon">&#xe640;</i> 删除选中</button>
+        &emsp;<button class="layui-btn" id="share"><i class="layui-icon">&#xe641;</i> 分享选中</button>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload" id="seek">搜索文件名</button>
+        <div class="layui-form-item " pane="">
+        </div>
+        {#        <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>#}
+        <table class="layui-hide " id="test" lay-filter="user"></table>
+    </div>
+        {% endblock %}
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+{% endblock %}
+<script type="text/javascript" src="/static/layui/layui.all.js"></script>
+<script type="text/html" id="barDemo">
+    <div><a href="{% url 'download_file'  123 %}" class="layui-btn layui-btn-sm  layui-btn-primary a_post"><i
+            class="layui-icon">&#xe601;</i></a>
+        <a class="layui-btn layui-btn-sm  layui-btn-primary" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+        <a class="layui-btn layui-btn-sm  layui-btn-primary"><i class="layui-icon">&#xe642;</i></a>
+    </div>
+</script>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/js/md5.js"></script>
+<script src="/static/js/home.js"></script>
+{% block page-js %}
+
+{% endblock %}
+</body>
+</html>

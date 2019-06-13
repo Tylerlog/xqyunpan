@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /*初始边距 为0*/
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        /*设置h1左边界*/
+        h1 {
+            margin-left: 300px;
+        }
+        /* 每行dvi的宽度*/
+        .div1 {
+            width: 400px;
+            height: 100px;
+
+        }
+        /*设置每个span*/
+        .left1 {
+            text-align: center; /* 内容居中*/
+            line-height: 100px; /* 字体行高*/
+
+            width: 120px; /*高度*/
+            height: 120px;/*宽度*/
+            border: 0.3px solid beige; /*边框*/
+            background-color: #b2b2b2; /*背景色*/
+            float: left; /*向左浮动*/
+        }
+        /*设置包含按钮的DIV */
+        .button1 {
+            margin-left: 270px;
+            margin-bottom: 20px;
+
+        }
+        /*设置按钮*/
+        .button1 button {
+            width: 100px;
+            height: 30px;
+            background-color: #00a2d4;
+            border-radius: 60%;
+            margin-right: 20px;
+
+        }
+        /*清除按钮点击后的焦点样式*/
+        button:focus{
+            outline: none;
+        }
+        /*设置大DIV的属性*/
+        #ddiv {
+            width: 360px;
+            height: 360px;
+            margin-left:  200px;
+            padding: -2px;
+            background-color: #00a2d4;
+            overflow: hidden;  /*设置溢出效果为：内容被剪切，并不可见*/
+            border-radius: 20%; /* 实现圆角框的效果*/
+        }
+    </style>
+</head>
+<body>
+<h1>放假去哪玩？</h1>
+<div class="button1">
+<button id="b1"> 开始</button>
+<button id="b2"> 停止</button>
+</div>
+<div id="ddiv">
+    <div class="div1">
+        <span class="left1">敲代码</span>
+        <span class="left1">敲代码</span>
+        <span class="left1">敲代码</span>
+
+    </div>
+    <div class="div1">
+        <span class="left1">敲代码</span>
+        <span class="left1">出去玩</span>
+        <span class="left1">敲代码</span>
+
+    </div>
+    <div class="div1">
+        <span class="left1">敲代码</span>
+        <span class="left1">敲代码</span>
+        <span class="left1">敲代码</span>
+
+    </div>
+</div>
+
+<script>
+    var b1Ele = document.getElementById('b1'); /*获取到 b1 对象*/
+    var b2Ele = document.getElementById('b2'); /*获取到 b2 对象*/
+    var span1 = document.getElementsByTagName('span'); /*获取到所有的span标签,对象为字典形式*/
+    var sum = 0; /*设置一个变量，用来表示span标签的数组位置*/
+    var s; /*定义变量，来存时间*/
+
+    /*数组值的变化，当sum值大于8时，sum变为0，sum+1*/
+    function a() {
+        if (sum > 8) {
+            sum = 0
+        }
+        sum += 1;
+
+    }
+
+    /*执行的函数*/
+    function start() {
+        a(); /*去执行a，改变sum的值*/
+        spans = span1[sum - 1]; /*定义相对应数组位置的对象*/
+        if (sum == 1) { /*如果sum的值为1，就去还原最后一个框*/
+            sums = 8;
+        } else {
+
+            sums = sum - 2;
+        }
+
+        /*定义相对应数组位置的对象，用来还原颜色*/
+        var span2 = document.getElementsByTagName('span')[sums];
+
+
+        spans.style.backgroundColor = '#00a2d4'; /*改变颜色*/
+        span2.style.backgroundColor = '#b2b2b2'; /*还原上一个颜色*/
+    }
+
+    b1Ele.onclick = function () { /*当点击开始按钮时执行*/
+        if (!s) {
+
+            /*定义一个定时器*/
+            s = setInterval(start, 50)
+        }
+    };
+    b2Ele.onclick = function () {
+        /*当停止按钮点击后清除定时器*/
+        clearInterval(s);
+        s = null
+    }
+</script>
+</body>
+</html>
