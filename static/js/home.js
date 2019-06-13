@@ -1,21 +1,26 @@
 var res_md5 = {};
 // 监听a标签，把a标签请求方式改为post请求
+//注意进度条依赖 element 模块，否则无法进行正常渲染和功能性操作
 
 layui.use('table', function () {
     var table = layui.table;
     var $ = layui.$;
+    var element = layui.element;
 
     table.render({
         elem: '#test'
+        , defaultToolbar: ['filter', 'print', 'exports']
         , url: '/home/select_file'
         , page: {limit: 15, limits: [15, 30, 45,60]} //分页模块
-
+        , where:{
+            'type': (window.location.pathname).split('/')[2],  //使用切分去取访问的类型
+        }
         , height: 'full-230'
         , skin: 'line'
         // , page: true //开启分页
         , cols: [[
-            {checkbox: true, fixed: true}
-            , {field: 'id', title: 'ID', width: 80, sort: true, fixed: true}
+            {checkbox: true, fixed: true , width: 80}
+            // , {field: 'id', title: 'ID', width: 80, sort: true, fixed: true}
 
             , {
                 field: 'filename',
@@ -24,15 +29,15 @@ layui.use('table', function () {
                 sort: true
             }
             , {
-                field: 'ope', title: '操作', templet: ' ' +
+                field: 'ope', title: '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp操作', templet: ' ' +
                     '<div><a href="/home/download/{{d.ope}}/{{d.filename}}" download  class="layui-btn layui-btn-sm  layui-btn-primary" ><i class="layui-icon">&#xe601;</i></a>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary"  lay-event="delete"><i class="layui-icon">&#xe640;</i></a>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>\n' +
                     '     </div>', width: 200
             }
-            , {field: 'size', title: '大小', width: 230, sort: true}
+            , {field: 'size', title: '大小', width: 150, sort: true}
             , {field: 'datetime', title: '日期', width: 230, sort: true}
-            , {field: 'experience', title: '类型', sort: true, width: 230}
+            , {field: 'experience', title: '类型', sort: true, width: 130}
         ]]
 
 
@@ -174,7 +179,7 @@ layui.use('table', function () {
 
             }
         }
-    )
+    );
 
 
     $('#share').on('click', function () {
@@ -189,16 +194,17 @@ layui.use('table', function () {
                 url: '/home/share_page/',
                 type: 'post',
                 data: {
-                    // 'type': this.id,
-                    'data': JSON.stringify(download_data)
+
+                    'data': JSON.stringify(download_data),
+                    'link': window.location.protocol + '//' + window.location.host + '/home/share_link/',  //使用切分去取访问的类型
+
                 },
                 success: function (result) {
                     if (result.start == '1') {
 
                         layer.prompt({ // 弹出框
                                 formType: 2
-                                , value: '分享链接：' + window.location.protocol + '//' + window.location.host +
-                                '/home/' + result.file_path + '提取密码为：' + result.password + ' 点击分享快去分享给好友啵~~'
+                                , value: '分享链接：' + result.file_path + '提取密码为：' + result.password + ' 点击分享快去分享给好友啵~~'
                                 , area: ['340px', '50px']
                                 , title: '分享链接'
                                 , btn: ['点击复制']
@@ -222,14 +228,16 @@ layui.use('table', function () {
 
 
 // 搜索
-    $('#seek').on('click', function () {
+    $('#seek,#all,#pic,#doc,#video,#music,#rests').on('click', function () {
         //执行重载
+
         var demoReload = $('#demoReload');
         table.reload('test', {
             url: '/home/select_file'
             , method: 'post'
             , where: { //设定异步数据接口的额外参数，任意设
-                filename: demoReload.val()
+                filename: demoReload.val(),
+                type:(window.location.pathname).split('/')[2],  //使用切分去取访问的类型
             }
             // , bbb: 'yyy'
             //…

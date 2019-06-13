@@ -39,4 +39,3 @@ def auth_code():
     return "".join(L),os.path.join("static","login_pic",pic_path) # 返回验证码字符串和图片相对路径（这是我配置的我的项目路径，自己用的时候记得改打开文件路径）
 
 
-

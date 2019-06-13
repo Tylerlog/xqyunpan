@@ -101,6 +101,7 @@ def get_cell_yzm(request):
             res = {"flag": 0, "msg": "手机号不合法！请重新输入！"}
         else:
             num_str = common.create_yzm()
+            print('123',num_str)
             result = common.msm(phone,num_str)
             res = {"flag":1,"phone":phone,"yzm":num_str}
         return JsonResponse(res)
