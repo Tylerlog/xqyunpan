@@ -11,8 +11,8 @@ def admins(request):
     return
 class Login(View):
     def get(self,request,name):
-        # if name:
-            # request.session['login'] = False
+        if name:
+            request.session['login'] = False
         return render(request, "login.html")
         pass
     def post(self,request,name):
@@ -69,7 +69,7 @@ def textname(request):
         return render(request,"error.html")
     elif request.method == "POST":
         if request.POST.get("type") == "phone":
-            user_obj = models.User.objects.filter(height=request.POST.get("phone"))
+            user_obj = models.UserInfo.objects.filter(cellphone=request.POST.get("cellphone"))
             if user_obj:
                 res = {"flag":0,"msg":"当前手机号已注册！"}
             else:
@@ -108,8 +108,17 @@ def get_cell_yzm(request):
 
 def changeinfo(request):
     if request.method == "GET":
-        user = {"id":1,"cellphone":17607186775,"gender":"男","birthday":"2019-12-12","name":"egon","info":"这人很烂，什么都没写",
-                "user_type":"admin",}
+        user = {}
+        user_obj = models.User.objects.filter(id = request.GET.get("id")).first()
+        user["id"] = user_obj.id
+        user["name"] = user_obj.name
+        user["user_type"] = user_obj.user_type
+        user["picture_path"] = user_obj.picture_path
+        user["gender"] = user_obj.userinfo.gender
+        user["cellphone"] = user_obj.userinfo.cellphone
+        user["birthday"] = user_obj.userinfo.birthday.isoformat()
+        user["info"] = user_obj.userinfo.info
+        print(user)
         return render(request, "myinfo.html", locals())
     else:
         print(request.POST)
@@ -132,7 +141,7 @@ def changeinfo(request):
         # if
 
 
-        return render(request,"home.html")
+        # return render(request,"home.html")
 
         # user_id = request.POST.get("user_id")
         # new_password = request.POST.get("new_password")

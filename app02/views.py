@@ -15,8 +15,9 @@ from app02.py import zip
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
-
+    if request.session.get("login"):
+        return render(request, 'home.html')
+    else:return render(request,"login.html")
 
 def aaa(request):
     return render(request, 'aaa.html')
@@ -178,7 +179,7 @@ def save(file_id, user_id, file_name, file_path):
 
 # 查询文件列表
 def select(request):
-    user = 'admin'
+    user = 'root'
     # 获取用户的ID
     user_id = User.objects.filter(name=user).first().id
 
