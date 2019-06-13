@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+      <link rel="icon" href="/static/img/ico.ico">
     <title>小强云盘用户注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 
@@ -63,6 +64,10 @@
         .login_inner {
             margin: 20px 60px;
         }
+        .input-color {
+            background: rgba(0,0,0,0);
+            color: rgb(91,250,222);
+        }
     </style>
 </head>
 <body>
@@ -71,23 +76,23 @@
 <div class="container" id="particles-js">
     <div class="login" style="background: rgba(0,0,0,0);color: #c4e3f3">
         <div class="d1 ">
-            <h2 style="text-align: center">用户注册</h2>
+            <h2 style="text-align: center;margin-top: 40px">用户注册</h2>
         </div>
         <div class="login_inner">
             <div>
-                <p>注册用户名:<input type="text" name="username" class="form-control " id="username"><span
+                <p>注册用户名:<input type="text" name="username" class="form-control input-color" id="username" ><span
                         id="span1"></span></p>
-                <p>注册密码:<input type="text" name="password" class="form-control" id="password"><span id="span2"></span>
+                <p>注册密码:<input type="password" name="password" class="form-control input-color" id="password" ><span id="span2"></span>
                 </p>
-                <p>再次输入密码:<input type="text" name="password" class="form-control" id="repassword"><span
+                <p>再次输入密码:<input type="password" name="password" class="form-control input-color" id="repassword" ><span
                         id="span2"></span></p>
-                <p>手机号:<input type="text" name="height" class="form-control" id="height"><span id="span3"></span></p>
+                <p>手机号:<input type="text" name="height" class="form-control input-color" id="height"><span id="span3" ></span></p>
                 <span>请输入验证码:</span>
                 <p>
-                    <input autocomplete="off" id="yzm" type="text" style="width: 100px;display: inline-block"
-                           name="auth" class="form-control">
-                    <input id="yzm_img" class="btn feachBtn" type="button" style="float: right;padding: auto 0"
-                           alt="" value="点击获取验证码">
+                    <input autocomplete="off" id="yzm" type="text" style="width: 100px;display: inline-block;"
+                           name="auth" class="form-control input-color">
+                    <input id="yzm_img" class="btn feachBtn input-color" type="button" style="float: right;padding: auto 0;"
+                           alt="" value="获取手机验证码">
                 </p>
                 <p style="text-align: center;margin-top: 30px"><input type="submit" class="btn btn-block btn-info"
                                                                       id="sub"></p>
@@ -120,7 +125,7 @@
             success: function (res) {
                 if (res.result) {
                     $span1Ele[0].innerHTML = res.msg;
-                    $span1Ele[0].style.color = "green";
+                    $span1Ele[0].style.color = "#5BFADE";
                     $userEle.removeClass("user")
                 }
                 else {
@@ -168,12 +173,12 @@
         }
         else {
             $.ajax({
-                url: "/reg/",
+                url: "/admins/register/",
                 type: "post",
                 data: {
                     "username": $userEle.val(),
                     "password": $pwdEle.val(),
-                    "height": cell[0],
+                    "cellphone": cell[0],
                 },
                 success: function (res) {
                     if (res.flag) {
@@ -186,7 +191,7 @@
                         })
                             .then((value) => {
                                 if (value) {
-                                    window.location.href = "/login/";
+                                    window.location.href = "/admins/login/";
                                 } else {
                                     window.location.reload()
                                 }
@@ -231,7 +236,7 @@
             return
         } else {
             $.ajax({
-                url: /get_cell_yzm/,
+                url: '/admins/get_cell_yzm/',
                 type: "post",
                 data: {
                     "cell": $("#height").val(),
@@ -278,7 +283,7 @@
     $("#height").on("blur",function () {
         if ($("#height").val().length===11){
             $.ajax({
-                url:"/textname/",
+                url:"/admins/textname/",
                 type:"post",
                 data:{
                     "type":"phone",

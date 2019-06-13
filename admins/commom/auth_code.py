@@ -29,8 +29,8 @@ def auth_code():
         # 定义要使用的字体
         # font1 = ImageFont.truetype("kumo.ttf", 28)
         # font1 = ImageFont.truetype("segoeui.ttf", random.randint(22,28))
-        font1 = ImageFont.truetype("consola.ttf", random.randint(24,40))
-        draw1.text([i * 20, 0], char1, color1, font=font1)
+        font1 = ImageFont.truetype("consola.ttf", random.randint(20,40))
+        draw1.text([i * 24, 0], char1, color1, font=font1)
 
     # 把生成的图片保存为"pic.png"格式
     pic_path = "%s.jpeg"%str(random.randint(0,3)*10+random.randint(1,9))

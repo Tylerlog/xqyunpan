@@ -22,7 +22,7 @@ def aaa(request):
     return render(request, 'aaa.html')
 
 def share(request):
-    return render(request, 'share.html')
+    return render(request, 'myinfo.html')
 
 
 # 进行加密文件夹

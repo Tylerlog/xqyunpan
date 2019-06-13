@@ -6,9 +6,21 @@ class User(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=32) # 用户姓名
     password = models.CharField(max_length=32) # 用户密码
-    cellphone = models.CharField(max_length=32) # 手机号
     user_type = models.CharField(max_length=32) # 用户类型
-    register_time = models.DateField(auto_now_add=True) # 用户注册时间
+    picture_path = models.CharField(max_length=250,default=r'/static/imgs/boy.png')
+    userinfo = models.OneToOneField(to='UserInfo', on_delete=models.CASCADE)
+
+
+class UserInfo(models.Model):
+    id = models.AutoField(primary_key=True)
+    cellphone = models.CharField(max_length=32,null=True)  # 手机号
+    gender = models.CharField(max_length=6, choices=(('1', '男'), ('0', '女')), default='1',
+                              verbose_name='性别')
+    birthday = models.DateField(default='1990-08-08')
+    info = models.CharField(max_length=250,default='这人很懒，什么都没写')
+    register_time = models.DateField(auto_now_add=True)  # 用户注册时间
+
+
 
 class File(models.Model):
 

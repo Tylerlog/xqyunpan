@@ -1,0 +1,55 @@
+       /*{#登录页抬头文字样式开始#}*/
+        .text-header {
+            height: 50px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /*{#登录页抬头文字样式结束#}*/
+
+        /*{#验证码图片样式开始#}*/
+        #yam_img {
+            width: 120px;
+            height: 30px;
+            border-radius: 5%;
+            float: right;
+        }
+
+        /*{#验证码图片样式结束#}*/
+
+        /*{#验证码整行样式开始#}*/
+        #yzm_data {
+            display: inline-block;
+        }
+
+        /*{#验证码整行样式结束#}*/
+
+        /*{#验证码输入框样式开始#}*/
+        #yzm {
+            width: 120px;
+            display: inline-block
+        }
+
+        /*{#验证码输入框样式结束#}*/
+
+        /*{#登陆页悬浮框样式开始#}*/
+        .login {
+            width: 350px;
+            height: 500px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -175px;
+            background-color: whitesmoke;
+            box-shadow: 0 1px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /*{#登陆页悬浮框样式结束#}*/
+
+        /*{#登录页输入部分div样式开始#}*/
+        .login_inner {
+            margin: 30px 50px;
+        }
+
+        /*{#登录页输入部分div样式结束#}*/
