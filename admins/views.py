@@ -110,7 +110,7 @@ def changeinfo(request):
     if request.method == "GET":
         user = {"id":1,"cellphone":17607186775,"gender":"男","birthday":"2019-12-12","name":"egon","info":"这人很烂，什么都没写",
                 "user_type":"admin",}
-        return render(request,"share.html",locals())
+        return render(request, "myinfo.html", locals())
     else:
         print(request.POST)
         id = request.POST.get("id")
