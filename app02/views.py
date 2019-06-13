@@ -40,7 +40,7 @@ def file_md5_name(file, time=None):
 # 上传文件
 def upload(request):
     # 需要一个登陆的用户名字
-    user = 'liqiang'
+    user = 'admin'
     # 需要一个file_path
     file_path = 'c:'
 
@@ -178,7 +178,7 @@ def save(file_id, user_id, file_name, file_path):
 
 # 查询文件列表
 def select(request):
-    user = 'liqiang'
+    user = 'admin'
     # 获取用户的ID
     user_id = User.objects.filter(name=user).first().id
 

@@ -1,0 +1,307 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小强云盘用户注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/SweetAlert/sweetalert.css">
+    <script src="/static/SweetAlert/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .border-red {
+            border-color: red;
+        }
+
+        #web_bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-width: 1000px;
+            z-index: -10;
+            zoom: 1;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            background-position: center 0;
+        }
+
+        .d1 {
+            height: 50px;
+        }
+
+        #yam_img {
+            width: 120px;
+            height: 30px;
+        }
+
+        #yzm_data {
+            display: inline-block;
+        }
+
+        .login {
+            width: 350px;
+            height: 550px;
+        {#border: 1px red solid; #} position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -275px;
+            margin-left: -175px;
+            background-color: whitesmoke;
+            box-shadow: 0 1px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .login_inner {
+            margin: 20px 60px;
+        }
+    </style>
+</head>
+<body>
+{#<div id="web_bg" style="background-image: url(/static/image_sourse/login_background.jpg);"></div>#}
+
+<div class="container" id="particles-js">
+    <div class="login" style="background: rgba(0,0,0,0);color: #c4e3f3">
+        <div class="d1 ">
+            <h2 style="text-align: center">用户注册</h2>
+        </div>
+        <div class="login_inner">
+            <div>
+                <p>注册用户名:<input type="text" name="username" class="form-control " id="username"><span
+                        id="span1"></span></p>
+                <p>注册密码:<input type="text" name="password" class="form-control" id="password"><span id="span2"></span>
+                </p>
+                <p>再次输入密码:<input type="text" name="password" class="form-control" id="repassword"><span
+                        id="span2"></span></p>
+                <p>手机号:<input type="text" name="height" class="form-control" id="height"><span id="span3"></span></p>
+                <span>请输入验证码:</span>
+                <p>
+                    <input autocomplete="off" id="yzm" type="text" style="width: 100px;display: inline-block"
+                           name="auth" class="form-control">
+                    <input id="yzm_img" class="btn feachBtn" type="button" style="float: right;padding: auto 0"
+                           alt="" value="点击获取验证码">
+                </p>
+                <p style="text-align: center;margin-top: 30px"><input type="submit" class="btn btn-block btn-info"
+                                                                      id="sub"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+
+
+<script src="{% static 'js/particles.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script type="text/javascript">
+    {#    验证码和手机号存储#}
+    var cell = [];
+
+    var $userEle = $("#username");
+    var $span1Ele = $("#span1");
+    $userEle.on("input", function () {
+        $.ajax({
+            url: "/admins/textname/",
+            type: "post",
+            data: {
+                "type":"name",
+                "username": $userEle.val(),
+            },
+            success: function (res) {
+                if (res.result) {
+                    $span1Ele[0].innerHTML = res.msg;
+                    $span1Ele[0].style.color = "green";
+                    $userEle.removeClass("user")
+                }
+                else {
+                    $span1Ele[0].innerHTML = res.msg;
+                    $span1Ele[0].style.color = "red";
+                    $userEle.addClass("user")
+                }
+            }
+        })
+    });
+    var $subEle = $("#sub");
+    var $pwdEle = $("#password");
+    var $heigit = $("#height");
+    var $span2Ele = $("#span2");
+    var $span3Ele = $("#span3");
+    $subEle.on("click", function (e) {
+        if (!$userEle.val()) {
+            $userEle.addClass("border-red");
+            $span1Ele[0].innerHTML = "亲，用户名不能为空哦！";
+            $span1Ele[0].style.color = "red";
+            e.preventDefault()
+        } else if (!$pwdEle.val()) {
+            $pwdEle.addClass("border-red");
+            $span2Ele[0].innerHTML = "亲，密码不能为空哦！";
+            $span2Ele[0].style.color = "red";
+            e.preventDefault()
+        } else if (!$heigit.val()) {
+            $heigit.addClass("border-red");
+            $span3Ele[0].innerHTML = "亲，手机号不能为空哦！";
+            $span3Ele[0].style.color = "red";
+            e.preventDefault()
+        } else if (cell[1] !== $("#yzm").val()) {
+            swal({
+                text: "亲！验证码输错了呢！",
+                icon: "warning",
+            });
+            e.preventDefault()
+
+        } else if ($pwdEle.val() !== $("#repassword").val()) {
+            swal({
+                text: "亲！两次密码不一致哦！",
+                icon: "warning",
+            });
+            e.preventDefault()
+        }
+        else {
+            $.ajax({
+                url: "/reg/",
+                type: "post",
+                data: {
+                    "username": $userEle.val(),
+                    "password": $pwdEle.val(),
+                    "height": cell[0],
+                },
+                success: function (res) {
+                    if (res.flag) {
+                        cell.splice(0,cell.length);
+                        swal({
+                            title: res.msg,
+                            text: "是否前往登陆？",
+                            icon: "success",
+                            buttons: "OK",
+                        })
+                            .then((value) => {
+                                if (value) {
+                                    window.location.href = "/login/";
+                                } else {
+                                    window.location.reload()
+                                }
+                            })
+                    } else {
+                        swal({
+                            title: "注册失败！",
+                            text: res.msg,
+                            icon: "warning",
+                            button: "OK",
+                        });
+                    }
+                }
+            })
+        }
+    });
+
+    $userEle.focus(function () {
+        $span1Ele[0].innerHTML = "";
+        if ($userEle.hasClass("border-red")) {
+            $userEle.removeClass("border-red")
+        }
+    });
+    $pwdEle.focus(function () {
+        $span2Ele[0].innerHTML = "";
+        if ($pwdEle.hasClass("border-red")) {
+            $pwdEle.removeClass("border-red");
+        }
+    });
+    $heigit.focus(function () {
+        $span3Ele[0].innerHTML = "";
+        if ($heigit.hasClass("border-red")) {
+            $heigit.removeClass("border-red");
+        }
+    });
+
+    {#获取验证码按钮点击计时开始#}
+    $('.feachBtn').click(function () {
+        cell.splice(0,cell.length);
+        if (!$("#height").val()) {
+            swal("亲，请输入手机号！");
+            return
+        } else {
+            $.ajax({
+                url: /get_cell_yzm/,
+                type: "post",
+                data: {
+                    "cell": $("#height").val(),
+                },
+                success: function (res) {
+                    if (!res.flag) {
+                        swal({
+                            title: "获取验证码失败！",
+                            text: res.msg,
+                            icon: "warning",
+                        });
+                        return
+                    } else {
+                        cell.push(res.phone);
+                        cell.push(res.yzm);
+
+                        let count = 60;
+                        const countDown = setInterval(() => {
+                            if (count === 0) {
+                                $('.feachBtn').val('重新发送').removeAttr('disabled');
+                                $('.feachBtn').css({
+                                    background: '#ff9400',
+                                    color: '#fff',
+                                });
+                                clearInterval(countDown);
+                            } else {
+                                $('.feachBtn').attr('disabled', true);
+                                $('.feachBtn').css({
+                                    background: '#d8d8d8',
+                                    color: '#707070',
+                                });
+                                $('.feachBtn').val((count + '秒后重新获取'));
+                            }
+                            count--;
+                        }, 1000);
+
+                    }
+
+                }
+            })
+        }});
+
+    {#鼠标移出手机号框校验开始#}
+    $("#height").on("blur",function () {
+        if ($("#height").val().length===11){
+            $.ajax({
+                url:"/textname/",
+                type:"post",
+                data:{
+                    "type":"phone",
+                    "phone":$("#height").val()
+                },
+                success:function (res) {
+                    if (!res.flag){
+                        swal({
+                            title:res.msg,
+                            icon:"warning"
+                        })
+                            .then(value => {
+                                $("#height").focus()
+                            });
+
+                    }
+                }
+            })
+        }
+    });
+    {#鼠标移出手机号框校验结束#}
+
+</script>
+
+
+</html>

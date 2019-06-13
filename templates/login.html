@@ -1,40 +1,164 @@
+
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>登录</title>
-    <link rel="stylesheet" href="/static/css/common.css"/>
-    <link rel="stylesheet" href="/static/css/login.css"/>
-    <link rel="stylesheet" href="/static/layui/css/layui.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/SweetAlert/sweetalert.css">
+    <script src="/static/SweetAlert/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {#        <link rel="stylesheet" href="{% static 'css/reset.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="/static/js/login.js"></script>
 
 </head>
 <body>
-<div class="login_wrap">
-    <div class="content">
+{#<div class="web_bg" style="background-image: url(/static/image_sourse/login_background.jpg);"></div>#}
+<div id="particles-js" class="container" >
+    <div class="login" style="background: rgba(0,0,0,0);color: #c4e3f3">
+        <div class=" text-header">
+            <h3 >欢迎来到小强云盘！</h3>
+        </div>
+        <div class="login_inner">
 
-        <div class="logo"></div>
-        <a class=""></a>
-        <div class="login_box">
-
-            <div class="login_title">
-                扫码登录
+            <div>
+                <p>用户名:<input type="text" style="color: #adadad" id="login_username" name="username"
+                              class="form-control" value="请输入用户名/手机号"></p>
+                <p>密码:<input type="password" id="login_password" name="password" class="form-control"></p>
+                <div id="yzm_data">
+                    <div id="yzm_p" class="hidden" style="width: 250px">
+                        <span>请输入验证码:</span>
+                        <p>
+                            <input autocomplete="off" id="yzm" type="text"
+                                   name="auth" class="form-control">
+                            <img id="yzm_img" class="hidden"
+                                 alt="">
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p>
+                        <p style="text-align: center"><input type="submit"
+                             class="btn btn-info btn-block"
+                             id="login_submit" value="登陆">
+                        </p>
+                        <p style="text-align: center">
+                            <a href="/reg/" class="btn btn-info btn-block"
+                               id="reg_submit">注册
+                            </a>
+                        </p>
+                    </p>
+                </div>
             </div>
-                
-            <div class="login_box1" style="width:100px; height:300px; margin-left:60px;margin-top:60px"><img
-                    src="/static/img/小程序.jpg"></div>
-            {#                <input id="text" type="text" value="http://www.runoob.com" style="width:80% "/><br/>#}
-            <div id="qrcode"  style="width:100px; height:300px;  margin-left:420px;margin-top:80px;"></div>
-<i class="login_title1">温馨提示：请先扫左边的小程序，再扫右边的登录二维码</i>
         </div>
 
-
     </div>
-</div>
-<script src="/static/js/qrcode.min.js"></script>
-<!-- 二维码生成 -->
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/login.js"></script>
-<script src="/static/layui/layui.all.js"></script>
 
+</div>
+<script src="{% static 'js/particles.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+<script type="text/javascript">
+ var image_str = [];
+    // {#用户名框聚焦后动态获取验证码#}
+    $("#login_username").on("focus", function () {
+        $("#yzm_img").removeClass("hidden");
+        $("#yzm_p").removeClass("hidden");
+        $("#yzm_img").click();
+    });
+    // {#用户名框聚焦后动态获取验证码#}
+
+    // {#提交按钮触发事件开始#}
+    $("#login_submit").on("click", function (e) {
+
+        if ($("#login_username").val().length < 3) {
+            swal({
+                title: "登陆失败！",
+                text: "请输入正确的用户名！",
+                icon: "warning",
+                button: "OK"
+            });
+            e.preventDefault();
+        } else if ($("#login_password").val().length < 3) {
+            swal({
+                title: "登陆失败！",
+                text: "请输入正确的密码！",
+                icon: "warning",
+                button: "OK"
+            });
+            e.preventDefault();
+        } else if ($("#yzm").val() !== image_str.pop()) {
+            swal({
+                title: "验证码不正确！",
+                icon: "error",
+            });
+            $("#yzm_img").click();
+            e.preventDefault();
+        } else {
+            $.ajax({
+                url: "/admins/login/",
+                type: "post",
+                data: {
+                    "username": $("#login_username").val(),
+                    "password": $("#login_password").val(),
+                },
+                success: function (res) {
+                    if (res.flag) {
+                        swal({
+                            title: res.msg,
+                            icon: "success",
+                        });
+                        window.location.href = "/home/";
+                    } else {
+                        swal({
+                            title: res.msg,
+                            icon: "error",
+                        });
+                        $("#login_username").val("");
+                        $("#login_password").val("");
+                        $("#yzm_img").click()
+                    }
+                }
+            })
+        }
+    });
+    // {#提交按钮触发事件结束#}
+
+    var path = '';
+    // {#动态获取验证码事件开始#}
+    $("#yzm_img").on("click", function () {
+        $.ajax({
+            url: "/admins/get_yzm/",
+            type: "post",
+            data: {
+                "type": "yzm"
+            },
+            success: function (res) {
+                image_str.push(res.str);
+                path = res.path;
+                $("#yzm_img")[0].src = "\\" + res.path
+            }
+        });
+
+    });
+    // {#动态获取验证码事件结束#}
+
+    // {#账号框聚焦和失焦事件开始#}
+    $("#login_username").on("focus", function () {
+        $("#login_username")[0].value = "";
+    });
+    $("#login_username").on("blur", function () {
+        if (!$("#login_username").val()) {
+            $("#login_username")[0].value = "请输入用户名/手机号";
+        }
+    });
+    // {#账号框聚焦和失焦事件结束#}
+</script>
 </body>
 </html>
