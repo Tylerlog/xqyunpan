@@ -5,7 +5,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="icon" href="/static/img/ico.ico">
+    <title>欢迎登陆小强云盘！</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -13,30 +14,94 @@
     <script src="/static/SweetAlert/sweetalert.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     {#        <link rel="stylesheet" href="{% static 'css/reset.css' %}">#}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{#    <link rel="stylesheet" href="/static/css/login.css">#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="/static/js/login.js"></script>
+    <style>
+           /*{#登录页抬头文字样式开始#}*/
+        .text-header {
+            height: 50px;
+            text-align: center;
+            margin-top: 50px;
+        }
 
+        /*{#登录页抬头文字样式结束#}*/
+
+        /*{#验证码图片样式开始#}*/
+        #yam_img {
+            position: fixed;
+            right: 0;
+            width: 120px;
+            height: 30px;
+            border-radius: 5%;
+            float: right;
+        }
+
+        /*{#验证码图片样式结束#}*/
+
+        /*{#验证码整行样式开始#}*/
+        #yzm_data {
+            display: inline-block;
+        }
+
+        /*{#验证码整行样式结束#}*/
+
+        /*{#验证码输入框样式开始#}*/
+        #yzm {
+            width: 120px;
+            display: inline-block
+        }
+
+        /*{#验证码输入框样式结束#}*/
+
+        /*{#登陆页悬浮框样式开始#}*/
+        .login {
+            width: 350px;
+            height: 500px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -175px;
+            background-color: whitesmoke;
+            box-shadow: 0 1px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /*{#登陆页悬浮框样式结束#}*/
+
+        /*{#登录页输入部分div样式开始#}*/
+        .login_inner {
+            margin: 30px 50px;
+        }
+
+        /*{#登录页输入部分div样式结束#}*/
+
+           .input-color {
+            background: rgba(0,0,0,0);
+            color: rgb(91,250,222);
+        }
+
+    </style>
 </head>
 <body>
 {#<div class="web_bg" style="background-image: url(/static/image_sourse/login_background.jpg);"></div>#}
 <div id="particles-js" class="container" >
     <div class="login" style="background: rgba(0,0,0,0);color: #c4e3f3">
         <div class=" text-header">
-            <h3 >欢迎来到小强云盘！</h3>
+            <h2 style="text-align: center">欢迎来到小强云盘！</h2>
         </div>
         <div class="login_inner">
 
             <div>
-                <p>用户名:<input type="text" style="color: #adadad" id="login_username" name="username"
-                              class="form-control" value="请输入用户名/手机号"></p>
-                <p>密码:<input type="password" id="login_password" name="password" class="form-control"></p>
+                <p>用户名:<input type="text"  id="login_username" name="username"
+                              class="form-control input-color" value="请输入用户名/手机号"></p>
+                <p>密码:<input type="password" id="login_password" name="password" class="form-control input-color"></p>
                 <div id="yzm_data">
-                    <div id="yzm_p" class="hidden" style="width: 250px">
+                    <div id="yzm_p" class="hidden" style="width: 250px;">
                         <span>请输入验证码:</span>
                         <p>
                             <input autocomplete="off" id="yzm" type="text"
-                                   name="auth" class="form-control">
+                                   name="auth" class="form-control input-color" >
                             <img id="yzm_img" class="hidden"
                                  alt="">
                         </p>
@@ -65,7 +130,7 @@
 <script src="{% static 'js/app.js' %}"></script>
 
 <script type="text/javascript">
- var image_str = [];
+     var image_str = [];
     // {#用户名框聚焦后动态获取验证码#}
     $("#login_username").on("focus", function () {
         $("#yzm_img").removeClass("hidden");

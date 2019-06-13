@@ -78,6 +78,6 @@ def random(request):
 
 
 def error(request):
-    return render(request, 'error.html')
+    return render(request, 'login.html')
     pass
 
