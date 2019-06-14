@@ -16,6 +16,7 @@ from app02.py import zip
 # Create your views here.
 def home(request):
     if request.session.get("login"):
+        print(request.session.get("login"))
         user_obj = User.objects.filter(name=request.session.get("name")).first()
         user_info = {"id":user_obj.id}
         print(user_info)

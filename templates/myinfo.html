@@ -7,17 +7,19 @@
 
 {% block content %}
     <fieldset class="">
-        <legend style="margin-left: 100px">个人资料修改</legend>
+        {{ header|safe }}
     </fieldset>
     <div class="container-fluid" style="margin-left: 100px;">
         <div class="row">
             <div class="col-lg-8 " style="width: 900px;height: 500px;border: black 1px ">
-                <form class="" action="" method="post">
+                <form class="" action="" method="post" enctype="multipart/form-data">
                     <div class="">
-                        <input type="hidden" name="id" value={{ user.id }}>
-                        <p style="width: 300px;height: 20px;">用户名：
+                        <input type="hidden" id="usersid" name="id" value={{ user.id }}>
+                        <p style="width: 300px;height: 35px;">用户名：
                             <span>{{ user.name }}</span><span style="font-size: xx-small;color: red;margin-left: 10px">用户名不可修改</span>
+                            <img src="{{ user.picture_path }}" id="user_pic" style="width:35px;height: 35px" alt="">
                         </p>
+                        <p>更换头像：<input style="display: inline-block" id="picture_path" accept="image/*" type="file" name="picture_path" value="更换头像"></p>
 
                         <p style="width: 300px;height: 20px;">密码：<a title="点击修改" id="password-sp">******</a></p>
 
@@ -31,8 +33,8 @@
 
                     <div class="" style="width: 300px;height: 30px;">
                         性别：
-                        <input type="radio" name="gender" value="男" title="男" checked>男
-                        <input type="radio" name="gender" value="女" title="女">女
+                        <input type="radio" name="gender" value="1" title="男" checked>男
+                        <input type="radio" name="gender" value="0" title="女">女
                         <input type="radio" name="gender" value="禁" title="禁用" disabled="">其他
                     </div>
 
@@ -68,7 +70,8 @@
 {#                        </div>#}
 {#                    </div>#}
                     <div class=""  style="width: 300px;height: 70px;padding-top: 20px">
-                        <button class="btn btn-info" >提交</button>
+                        <button class="btn btn-info" >保存修改</button>
+                        <a href="/home/" class="btn btn-info">返回首页</a>
 {#                        <input type="button" class="btn btn-info" id="dd1" value="密码">#}
                     </div>
                 </form>
@@ -96,7 +99,39 @@
 
     $("#cellphone-p").on("click",function () {
         $("#new-cellphone-div").removeClass("hidden")
-    })
+    });
+
+    $("#picture_path").on("click",function () {
+        $("#picture_path").on("change",function () {
+             var formData = new FormData();
+                formData.append("change_pic", document.getElementById("picture_path").files[0]);
+                formData.append("id",$("#usersid").val() );
+                formData.append("pic_name",document.getElementById("picture_path").files[0].name);
+            $.ajax({
+                url:"/admins/change_pic/",
+                type:"post",
+                data:formData,
+                contentType: false,  //不要编码
+                processData: false,  //告诉浏览器不要处理数据
+                success: function (res) {
+                        if (res.flag) {
+                            $("#user_pic")[0].src = res.path;
+                            {#alert("上传成功！");#}
+                        }
+                        if (!res.flag) {
+                            alert();
+                        }
+                        {#$("#imgWait").hide();#}
+                    },
+                    error: function (res) {
+                        alert("上传头像失败！");
+                        {#$("#imgWait").hide();#}
+                    }
+            })
+        })
+    });
+
+
 
 
 
