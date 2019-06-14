@@ -7,57 +7,102 @@ from datetime import *
 from django.db.models import Q
 from django.http import Http404, FileResponse
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 from app02.models import User, File, File_Users, Share
 from app02.py import zip
-
+from admins.commom import common
 
 # Create your views here.
+
+@common.is_login
 def home(request):
+    return redirect('/home/all')
+
+
+# 所有文件
+@common.is_login
+def all(request):
     if request.session.get("login"):
-        print(request.session.get("login"))
-        user_obj = User.objects.filter(name=request.session.get("name")).first()
-        user_info = {"id": user_obj.id}
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
         print(user_info)
-        return render(request, 'home.html')
+        return render(request, 'home.html',locals())
+
     else:
         return render(request, "login.html")
 
 
-# 所有文件
-def all(request):
-    return render(request, 'home.html')
-
 
 # 图片文件
+@common.is_login
 def pic(request):
-    return render(request, 'pic.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'pic.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 # 文档文件
+@common.is_login
 def doc(request):
-    return render(request, 'doc.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'doc.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 # 视频文件
+@common.is_login
 def video(request):
-    return render(request, 'video.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'video.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 # 音乐文件
+@common.is_login
 def music(request):
-    return render(request, 'music.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'music.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 # 其他文件
+@common.is_login
 def rests(request):
-    return render(request, 'rests.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'rests.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 # 分享中心
+@common.is_login
 def share(request):
-    return render(request, 'share.html')
+    if request.session.get("login"):
+        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        print(user_info)
+        return render(request, 'share.html',locals())
+
+    else:
+        return render(request, "login.html")
 
 
 def aaa(request):
@@ -77,6 +122,7 @@ def file_md5_name(file, time=None):
 
 
 # 上传文件
+@common.is_login
 def upload(request):
     # 需要一个登陆的用户名字
     user = 'admin'
@@ -216,6 +262,7 @@ def save(file_id, user_id, file_name, file_path):
 
 
 # 查询文件列表
+@common.is_login
 def select(request):
     user = 'admin'
     # 获取用户的ID
@@ -282,6 +329,7 @@ def download_file(file_id):
 
 
 # 文件下载
+@common.is_login
 def download(request, data):
     # 分割名字和文件校验数据
 
@@ -332,6 +380,7 @@ def download_pack(request):
 
 
 # 文件删除
+@common.is_login
 def delete(request):  # 提交过来删除有两种方式，一种是单个删除，一种是多个删除
     # 反 json 序列化，并get取值
     data = request.POST.get('data')
@@ -351,6 +400,7 @@ def delete(request):  # 提交过来删除有两种方式，一种是单个删�
 
 
 # 文件修改
+@common.is_login
 def update(request):
     if request.method == 'POST':
         file_id = request.POST.get('file_id')
@@ -371,6 +421,7 @@ def random_link(sum=10):
 
 
 # 生成文件分享
+@common.is_login
 def share_page(request, data):
     # 需要一个用户名
 
@@ -405,6 +456,7 @@ def share_page(request, data):
 
 
 # 查询分享文件列表
+@common.is_login
 def share_list(request):
     user = 'admin'
     # 获取用户的ID
@@ -454,6 +506,7 @@ def share_list(request):
 
 
 # 文件删除
+@common.is_login
 def share_cancel(request):  # 提交过来删除有两种方式，一种是单个删除，一种是多个删除
     # 反 json 序列化，并get取值
     data = request.POST.get('data')
@@ -549,3 +602,7 @@ def share_link(request,urls):
         return render(request, 'error.html')
 
     return render(request, 'sharelink.html')
+
+
+def title(request):
+    return render(request,'pop-up.html')

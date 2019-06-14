@@ -6,7 +6,7 @@ from django.contrib import admin
 from app02 import views
 urlpatterns = [
     url(r'^$', views.home),
-    url(r'^all', views.all), # 所有文件
+    url(r'^all$', views.all), # 所有文件
     url(r'^pic', views.pic), # 图片文件
     url(r'^doc', views.doc), # 文档文件
     url(r'^video', views.video), # 视频文件

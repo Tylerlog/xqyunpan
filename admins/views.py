@@ -15,7 +15,7 @@ class Login(View):
     def get(self,request,name):
         if name:
             request.session['login'] = False
-        return render(request, "login.html")
+        return redirect('/')
 
     def post(self,request,name):
         username: str = request.POST.get("username")
@@ -30,6 +30,7 @@ class Login(View):
             request.session['login'] = True
             request.session['id'] = obj.first().id
             request.session["name"] = obj.first().name
+            request.session["img"] = obj.first().picture_path
             request.session["user_type"] = obj.first().user_type
             request.session.set_expiry(0)
             # return redirect("/show/")
@@ -116,6 +117,8 @@ def get_cell_yzm(request):
 def changeinfo(request):
     if request.method == "GET":
         user = common.select_userinfo(id=request.session.get("id"))
+        user_info = {"id": request.session.get("id"), 'img': request.session.get("img"), 'name': request.session.get("name")}
+
         header = '<legend style="margin-left: 100px">个人资料</legend>'
         return render(request, "myinfo.html", locals())
     else:

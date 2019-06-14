@@ -30,8 +30,8 @@
                 <a href="javascript:;">关于我们</a>
                 <dl class="layui-nav-child">
                     <dd><a href="">制作人：</a></dd>
-                    <dd><a href="https://www.cnblogs.com/dongxixi/" target="_blank">&nbsp;&nbsp; 董希希博客</a></dd>
-                    <dd><a href="https://www.cnblogs.com/tyler-bog/" target="_blank">&nbsp;&nbsp; 李　强博客</a></dd>
+                    <dd><a href="https://www.cnblogs.com/dongxixi/" target="_blank" title="点击将访问此董希希博客">&nbsp;&nbsp; 董希希</a></dd>
+                    <dd><a href="https://www.cnblogs.com/tyler-bog/" target="_blank" title="点击将访问此李强博客">&nbsp;&nbsp; 李　强</a></dd>
                 </dl>
             </li>
         </ul>
@@ -46,7 +46,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/admins/login/?id=1">退了</a></li>
+            <li class="layui-nav-item"><a href="/admins/login/1">退出</a></li>
         </ul>
     </div>
 
@@ -83,6 +83,34 @@
 <script type="text/javascript" src="/static/layui/layui.all.js"></script>
 <script src="/static/layui/layui.js" charset="utf-8"></script>
 <script src="/static/js/sharelink.js"></script>
+<script>
+    //iframe窗
 
+    layer.open({
+        type: 2,
+        title: false,
+        closeBtn: 1, //不显示关闭按钮
+        shade: 0,
+        area: ['340px', '215px'],
+        offset: 'rb', //右下角弹出
+        time: 0, //2秒后自动关闭
+        anim: 2,
+
+        content: ['/title'], //iframe的url，no代表不显示滚动条
+        /*end: function () { //此处用于演示
+            layer.open({
+                type: 2,
+                title: '很多时候，我们想最大化看，比如像这个页面。',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '//fly.layui.com/'
+            });
+        }*/
+    });
+
+
+</script>
 </body>
 </html>
