@@ -20,7 +20,8 @@ def home(request):
         user_obj = User.objects.filter(name=request.session.get("name")).first()
         user_info = {"id": user_obj.id}
         print(user_info)
-        return render(request, 'home.html')
+        user = {"id":request.session.get("id"),"name":request.session.get("name"),"picture_path":request.session.get("picture_path")}
+        return render(request, 'home.html',locals())
     else:
         return render(request, "login.html")
 
@@ -219,7 +220,7 @@ def save(file_id, user_id, file_name, file_path):
 def select(request):
     user = 'admin'
     # 获取用户的ID
-    user_id = User.objects.filter(name=user).first().id
+    user_id = request.session.get("id")
     # table返回信息
     info = {"code": 200, "msg": "", "count": 100, "data": []}
 

@@ -31,7 +31,8 @@ class Login(View):
             request.session['id'] = obj.first().id
             request.session["name"] = obj.first().name
             request.session["user_type"] = obj.first().user_type
-            request.session.set_expiry(0)
+            request.session["picture_path"] = obj.first().picture_path
+            request        .session.set_expiry(0)
             # return redirect("/show/")
             res = {"flag": 1, "msg": "登陆成功！"}
         else:
