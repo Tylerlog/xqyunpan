@@ -5,7 +5,9 @@ from app02 import models
 from admins.commom import auth_code
 from admins.commom import common
 from django.db import transaction
+from xqyunpan import settings
 import re
+import os
 # Create your views here.
 def admins(request):
     return
@@ -14,17 +16,19 @@ class Login(View):
         if name:
             request.session['login'] = False
         return render(request, "login.html")
-        pass
+
     def post(self,request,name):
         username: str = request.POST.get("username")
         password = request.POST.get("password")
         print(username, password)
         if username[0].isdigit():
-            obj = models.User.objects.filter(height=username, password=password)
+            obj = models.User.objects.filter(userinfo__cellphone=username, password=password)
+            print(obj)
         else:
             obj = models.User.objects.filter(name=username, password=password)
         if obj:
             request.session['login'] = True
+            request.session['id'] = obj.first().id
             request.session["name"] = obj.first().name
             request.session["user_type"] = obj.first().user_type
             request.session.set_expiry(0)
@@ -107,23 +111,15 @@ def get_cell_yzm(request):
         return JsonResponse(res)
     else:return render(request,"error.html")
 
+
+@common.is_login
 def changeinfo(request):
     if request.method == "GET":
-        user = {}
-        user_obj = models.User.objects.filter(id = request.GET.get("id")).first()
-        user["id"] = user_obj.id
-        user["name"] = user_obj.name
-        user["user_type"] = user_obj.user_type
-        user["picture_path"] = user_obj.picture_path
-        user["gender"] = user_obj.userinfo.gender
-        user["cellphone"] = user_obj.userinfo.cellphone
-        user["birthday"] = user_obj.userinfo.birthday.isoformat()
-        user["info"] = user_obj.userinfo.info
-        print(user)
+        user = common.select_userinfo(id=request.session.get("id"))
+        header = '<legend style="margin-left: 100px">个人资料</legend>'
         return render(request, "myinfo.html", locals())
     else:
-        print(request.POST)
-        id = request.POST.get("id")
+        id = request.session.get("id")
         user_obj = models.User.objects.filter(id=id).first()
         if request.POST.get("password"):
             user_obj.password = request.POST.get("password")
@@ -135,7 +131,11 @@ def changeinfo(request):
             user_obj.userinfo.info = request.POST.get("info")
         user_obj.save()
         user_obj.userinfo.save()
-        return redirect("/admins/myinfo/")
+
+        user = common.select_userinfo(id=id)
+
+        header = '<legend style="margin-left: 100px;color:green">修改成功！</legend>'
+        return render(request,"myinfo.html",locals())
 
 
 
@@ -152,4 +152,17 @@ def changeinfo(request):
         # birthday = request.POST.get("birthday")
 
 
+def change_pic(request):
+    print(request.POST)
+    print(request.FILES)
+    path = os.path.join(settings.BASE_DIR,"static","imgs","%s%s"%(request.POST.get("id"),request.POST.get("pic_name")))
+    with open(path,"wb") as f:
+        for line in request.FILES.get("change_pic"):
+            f.write(line)
+    path = os.sep+os.path.join("static","imgs","%s%s"%(request.POST.get("id"),request.POST.get("pic_name")))
+    models.User.objects.filter(id=request.POST.get("id")).update(picture_path = path)
+    res = {"flag":1,"path":path}
+
+    print(path)
+    return JsonResponse(res)
 

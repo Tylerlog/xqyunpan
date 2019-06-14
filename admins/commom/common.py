@@ -43,3 +43,32 @@ def msm(phone, number):
     return True
 
 
+#个人主页渲染
+def select_userinfo(id):
+    from app02 import models
+    user_obj = models.User.objects.filter(id=id).first()
+    user = {}
+    user["id"] = user_obj.id
+    user["name"] = user_obj.name
+    user["user_type"] = user_obj.user_type
+    user["picture_path"] = user_obj.picture_path
+    user["gender"] = user_obj.userinfo.gender
+    user["cellphone"] = user_obj.userinfo.cellphone
+    user["birthday"] = user_obj.userinfo.birthday.isoformat()
+    user["info"] = user_obj.userinfo.info
+    return user
+
+from functools import wraps
+from django.shortcuts import render
+def is_login(func):
+    @wraps(func)
+    def inner(*args,**kwargs):
+        if args[0].session.get("login",False):
+            return func(*args,**kwargs)
+        else:
+            return render(args[0],"login.html")
+    return inner
+
+
+
+

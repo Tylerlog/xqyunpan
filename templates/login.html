@@ -158,7 +158,7 @@
                 button: "OK"
             });
             e.preventDefault();
-        } else if ($("#yzm").val() !== image_str.pop()) {
+        } else if ($("#yzm").val().toLowerCase() !== image_str.pop().toLowerCase()) {
             swal({
                 title: "验证码不正确！",
                 icon: "error",
