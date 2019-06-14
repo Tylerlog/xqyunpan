@@ -1,12 +1,35 @@
+
+var index
 layui.use('table', function () {
     var table = layui.table;
     var $ = layui.$;
     var element = layui.element;
+
+//页面层
+
+    index =layer.open({
+        id: 'layer',
+        type: 1,
+        Boolean: false,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['420px', '240px'], //宽高
+        skin: 'demo-class',  //自定义样式
+        closeBtn: 0,
+        content: '<img src="/static/img/ico.ico" alt="" class="img1">' +
+            '<div class="share">' +
+            '请输入分享码进行提取：' +
+            '<div class="layui-inline"><input type="password" class="layui-input" name="id" id="share_password" autocomplete="off" ></div>' +
+            '<button class="layui-btn" data-type="reload" id="select_share_link">分享密码</button></div>',
+
+
+    });
+
+
     $('#select_share_link').on('click', function () {
         table.render({
             elem: '#share'
             , defaultToolbar: ['filter', 'print', 'exports']
-            , url: '/home/select_share_link/'+window.location.pathname
+            , url: '/home/select_share_link/' + window.location.pathname
             , page: {limit: 15, limits: [15, 30, 45, 60]} //分页模块
             , where: {
 
@@ -40,7 +63,16 @@ layui.use('table', function () {
                 , {field: 'experience', title: '类型', sort: true, width: 130}
             ]]
             , done: function (res, curr, count) {
-                console.log(res['msg'])
+                if (res["start"] == 0) {
+
+
+                    layer.msg(res['msg'], {icon: 2});
+
+                } else {
+
+                    setInterval('layer.close(index);', 100)
+
+                }
             }
             , text: {none: '暂无相关数据'}
 
@@ -57,7 +89,7 @@ layui.use('table', function () {
 
         var demoReload = $('#demoReload');
         table.reload('share', {
-            url: '/home/select_share_link/'+ window.location.pathname.split('/')[3]
+            url: '/home/select_share_link/' + window.location.pathname.split('/')[3]
             , method: 'post'
             , where: { //设定异步数据接口的额外参数，任意设
                 filename: demoReload.val(),
@@ -73,5 +105,34 @@ layui.use('table', function () {
 
 
     });
+    // 选中下载分享
+    $('#download').on('click', function () {
+            var download_data = table.checkStatus('share');
+            if (download_data.data == '') {
+                layer.msg('没有已选中的！')
+            } else {
+                $.ajax({
+                    url: '/home/download_pack',
+                    type: 'post',
+                    data: {
+                        'type': this.id,
+                        'data': JSON.stringify(download_data)
+                    },
+                    success: function (result) {
+                        if (result.start == '1') {
 
+                            layer.msg(result.msg);
+                            console.log(result.file_path);
+                            $('#url').attr('href', result.file_path)[0].click()
+                        } else {
+                            layer.msg(result.msg)
+
+
+                        }
+                    }
+                })
+
+            }
+        }
+    );
 });

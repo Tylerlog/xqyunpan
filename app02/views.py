@@ -153,7 +153,8 @@ def upload(request):
 
 # 获取当前时间
 def gain_time():
-    tim = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 当前时间
+
+    tim = (datetime.now()+ timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')  # 当前时间
     return tim
 
 
@@ -180,7 +181,6 @@ def bytes2human(n):
 # p判断文件类型
 def file_type(file_name: str):
     name = file_name.split('.')[-1].upper()
-    print(name)
     # 判断是否为图片
     if name in ['JPG', 'Webp', 'BMP', 'PCX', 'TIF', 'GIF', 'JPEG', 'TGA', 'JPG',
                 'EXIF', 'FPX', 'SVG', 'PSD', 'CDR', 'PCD', 'DXF', 'UFO', 'EPS',
@@ -324,7 +324,7 @@ def download_pack(request):
             os.remove(res_path)
 
         # 拼接返回下载路径
-        file_path = os.path.join('download', dow_name, '%s-number-file' % sum + '.zip')
+        file_path = os.path.join('/home/','download', dow_name, '%s-number-file' % sum + '.zip')
         # 存入数据库
         File.objects.create(path=new_path, data=dow_name, size=0, type='zip')
         return JsonResponse({'start': 1, 'msg': '正在下载。。', 'file_path': file_path, 'type': request.POST.get('type')})
@@ -381,18 +381,14 @@ def share_page(request, data):
         data = json.loads(request.POST.get('data')).get('data')
         # 获取文件所在服务器的路径，用列表info接
         sum = 0
-        print(data)
         # 生成分享用户id
         user_id = User.objects.filter(name=name).first().id
-        print(user_id)
 
         sum = len(data)
         # 生成分享名
         share_name = '%s分享%s的等%s个文件' % (name, data[0].get('filename'), sum)
-        print(share_name)
         # 生成随机登录码
         code = random_link(10)
-        print(code)
         # 生成随机密码
         password = random_link(4)
 
@@ -400,7 +396,6 @@ def share_page(request, data):
         Share_obj = Share.objects.create(share_name=share_name, share_password=password, share_path=code
                                          , user_id=user_id, share_time=gain_time())
         # 分享的文件表关联
-        print(Share_obj.id)
         for i in data:
             File_Users_obj = File_Users.objects.filter(id=i.get('t_id')).first()
             Share_obj.File_Users.add(File_Users_obj)
@@ -492,7 +487,6 @@ def select_share_link(request,data):
         return JsonResponse(info)
 
     # 获取分享路径
-    print(share_password)
     # 判断密码是否一致
     share_obj = Share.objects.filter(share_path=share_path,share_password=share_password.upper()).first()
     # 如果校验错误，返回提示分享密码错误
@@ -505,12 +499,10 @@ def select_share_link(request,data):
     # # 文件类型
     if request.method == 'POST':
         filename = request.POST.get('filename')
-        print(filename)
         page = int(request.POST.get('page'))  # 第几页
         limit = int(request.POST.get('limit'))  # 每页数量
         data_obj = Share.objects.filter(Q(share_name__icontains=filename),share_path=share_path
                                         ,share_password=share_password).first()
-        print(data_obj)
         if data_obj == None:
             data=[]
         else:
@@ -542,6 +534,8 @@ def select_share_link(request,data):
             }
             info["data"].append(a)
     info["count"] = x
+    info["start"] = 1
+    info["msg"] = '校验成功！'
     return JsonResponse(info)
 
 
