@@ -17,33 +17,47 @@ from app02.py import zip
 def home(request):
     if request.session.get("login"):
         user_obj = User.objects.filter(name=request.session.get("name")).first()
-        user_info = {"id":user_obj.id}
+        user_info = {"id": user_obj.id}
         print(user_info)
         return render(request, 'home.html')
     else:
-        return render(request,"login.html")
+        return render(request, "login.html")
+
+
 # 所有文件
 def all(request):
     return render(request, 'home.html')
+
+
 # 图片文件
 def pic(request):
     return render(request, 'pic.html')
+
+
 # 文档文件
 def doc(request):
     return render(request, 'doc.html')
+
+
 # 视频文件
 def video(request):
     return render(request, 'video.html')
+
+
 # 音乐文件
 def music(request):
     return render(request, 'music.html')
+
+
 # 其他文件
 def rests(request):
     return render(request, 'rests.html')
 
+
 # 分享中心
 def share(request):
     return render(request, 'share.html')
+
 
 def aaa(request):
     return render(request, 'aaa.html')
@@ -176,7 +190,7 @@ def file_type(file_name: str):
                   'CLASSPATH', 'SVN', 'GITIGNORE', 'TXT', 'LOG', 'SYS', 'INI', 'PDF',
                   'XLS', 'XLSX', 'DOC', 'PPT', 'EXE', 'MSI', 'BAT', 'SH', 'RPM', 'DEB',
                   'BIN', 'DMG', 'PKG', 'CLASS', 'DLL', 'SO', 'A', 'KO', 'RAR', 'ZIP',
-                  'ARJ', 'GZ', 'TAR', 'TAR.GZ', '7Z', 'HTM', 'HTML', 'JS', 'CSS','MD']:
+                  'ARJ', 'GZ', 'TAR', 'TAR.GZ', '7Z', 'HTM', 'HTML', 'JS', 'CSS', 'MD']:
         return '文档'
     # 判断是否为视频MP3、WMA、AVI、RM、RMVB、FLV、MPG、MOV、MKV
     elif name in ['MP4', 'M4V', 'MOV', 'QT', 'AVI', 'FLV', 'WMV',
@@ -207,10 +221,9 @@ def select(request):
     user_id = User.objects.filter(name=user).first().id
     # table返回信息
     info = {"code": 200, "msg": "", "count": 100, "data": []}
-    print('info11',info)
 
     # 文件类型
-    func = {'all':'','pic':'图片','doc':'文档','video':'视频','music':'音乐','rests':'其他'}
+    func = {'all': '', 'pic': '图片', 'doc': '文档', 'video': '视频', 'music': '音乐', 'rests': '其他'}
     if request.method == 'POST':
 
         type = request.POST.get('type')
@@ -219,34 +232,31 @@ def select(request):
             limit = int(request.POST.get('limit'))  # 每页数量
             filename = request.POST.get('filename')
             data = File_Users.objects.filter(Q(file_name__icontains=filename)
-                                             , Q(File__type__icontains=func[type]),user_id=user_id)
+                                             , Q(File__type__icontains=func[type]), user_id=user_id)
         else:
             return JsonResponse(info)
     else:
 
         type = request.GET.get('type')
-        print('type',type)
         if type in func:
             # 获取所有的数据
             page = int(request.GET.get('page'))  # 第几页
             limit = int(request.GET.get('limit'))  # 每页数量
-            data = File_Users.objects.filter(Q(File__type__icontains=func[type]),user_id=user_id)
+            data = File_Users.objects.filter(Q(File__type__icontains=func[type]), user_id=user_id)
         else:
             return JsonResponse(info)
 
-
-
-
     x = 0
     # 设置图标
-    file_font = {"文件夹":"fa-folder","图片":"fa-file-image-o","文档":"fa-file-text","视频":"fa-file-movie-o",
-                 "音乐":"fa-file-sound-o","其他":"fa-file"}
+    file_font = {"文件夹": "fa-folder", "图片": "fa-file-image-o", "文档": "fa-file-text", "视频": "fa-file-movie-o",
+                 "音乐": "fa-file-sound-o", "其他": "fa-file"}
+
     for i in data:
 
         # obj = File.objects.filter(id=file_id).first()
         x += 1
 
-        if x <= (page * limit) and x > ((page-1) * limit):
+        if x <= (page * limit) and x > ((page - 1) * limit):
             a = {
                 "id": x,
                 "t_id": i.id,
@@ -380,29 +390,26 @@ def share_page(request, data):
         share_name = '%s分享%s的等%s个文件' % (name, data[0].get('filename'), sum)
         print(share_name)
         # 生成随机登录码
-        code = request.POST.get('link')+ random_link(10)
+        code = random_link(10)
         print(code)
         # 生成随机密码
         password = random_link(4)
 
         # 存入share表
         Share_obj = Share.objects.create(share_name=share_name, share_password=password, share_path=code
-                             , user_id=user_id, share_time=gain_time())
+                                         , user_id=user_id, share_time=gain_time())
         # 分享的文件表关联
         print(Share_obj.id)
         for i in data:
             File_Users_obj = File_Users.objects.filter(id=i.get('t_id')).first()
             Share_obj.File_Users.add(File_Users_obj)
 
-        return JsonResponse({'start': 1, 'msg': share_name, 'file_path': code, 'password':password})
+        return JsonResponse({'start': 1, 'msg': share_name, 'file_path':request.POST.get('link') + code, 'password': password})
     return JsonResponse({'start': 0, 'msg': '请求不合法'})
 
 
-
-
-# 查询文件列表
+# 查询分享文件列表
 def share_list(request):
-    print(123)
     user = 'admin'
     # 获取用户的ID
     user_id = User.objects.filter(name=user).first().id
@@ -411,18 +418,16 @@ def share_list(request):
 
     post_type = request.POST.get('type')
     get_type = request.GET.get('type')
-    print('123',post_type,get_type)
-    if post_type == 'share' or get_type=='share':
+    if post_type == 'share' or get_type == 'share':
         if request.method == 'POST':
-
+            link = request.POST.get('link')
             page = int(request.POST.get('page'))  # 第几页
             limit = int(request.POST.get('limit'))  # 每页数量
             filename = request.POST.get('filename')
-            data = Share.objects.filter(Q(share_name=filename),user_id=user_id)
+            data = Share.objects.filter(Q(share_name__icontains=filename), user_id=user_id)
         else:
 
-            type = request.GET.get('type')
-            print('type',type)
+            link = request.GET.get('link')
 
             # 获取所有的数据
             page = int(request.GET.get('page'))  # 第几页
@@ -431,21 +436,18 @@ def share_list(request):
     else:
         return JsonResponse(info)
 
-
-
     x = 0
     # 设置图标
     for i in data:
         x += 1
 
-        if x <= (page * limit) and x > ((page-1) * limit):
-            print(i.share_name)
+        if x <= (page * limit) and x > ((page - 1) * limit):
             a = {
                 "id": x,
                 "t_id": i.id,
                 "share_name": i.share_name,
                 "ope": "",
-                "share_path": i.share_path,
+                "share_path": link + i.share_path,
                 "share_password": i.share_password,
                 "share_time": i.share_time,
 
@@ -454,7 +456,7 @@ def share_list(request):
     info["count"] = x
     return JsonResponse(info)
 
-# share_cancel
+
 # 文件删除
 def share_cancel(request):  # 提交过来删除有两种方式，一种是单个删除，一种是多个删除
     # 反 json 序列化，并get取值
@@ -473,7 +475,82 @@ def share_cancel(request):  # 提交过来删除有两种方式，一种是单�
 
     return JsonResponse({'start': 0, 'msg': '非法访问！'})
 
+# 访客用户分享文件列表
+def select_share_link(request,data):
+    # table返回信息
+    info = {"code": 200, "msg": "",'start': 0, "count": 100, "data": [],}
+    # 获取密码和分享路径
+    share_password = request.GET.get('password')
+    if not share_password:
+        share_password = request.POST.get('password')
+    share_path = data.split('/')[-1]
+
+    # 判断密码，如果为空，返回提示输入分享密码
+    if share_password == '' or share_password==None:
+        info['msg']='请输入分享密码！'
+        return JsonResponse(info)
+
+    # 获取分享路径
+    print(share_password)
+    # 判断密码是否一致
+    share_obj = Share.objects.filter(share_path=share_path,share_password=share_password.upper()).first()
+    # 如果校验错误，返回提示分享密码错误
+    if not share_obj:
+        info['msg'] = '分享密码错误！'
+        return JsonResponse(info)
 
 
-def share_link(request):
-    return
+    # data.count()  获取数据个数
+    # # 文件类型
+    if request.method == 'POST':
+        filename = request.POST.get('filename')
+        print(filename)
+        page = int(request.POST.get('page'))  # 第几页
+        limit = int(request.POST.get('limit'))  # 每页数量
+        data_obj = Share.objects.filter(Q(share_name__icontains=filename),share_path=share_path
+                                        ,share_password=share_password).first()
+        print(data_obj)
+        if data_obj == None:
+            data=[]
+        else:
+            data = data_obj.File_Users.all()
+    else:
+
+        # 获取所有的数据
+        page = int(request.GET.get('page'))  # 第几页
+        limit = int(request.GET.get('limit'))  # 每页数量
+        data = share_obj.File_Users.all()
+
+    x = 0
+    # 设置图标
+    file_font = {"文件夹": "fa-folder", "图片": "fa-file-image-o", "文档": "fa-file-text", "视频": "fa-file-movie-o",
+                 "音乐": "fa-file-sound-o", "其他": "fa-file"}
+    # 循环取值
+    for i in data:
+        x += 1
+        if x <= (page * limit) and x > ((page - 1) * limit):
+            a = {
+                "id": x,
+                "t_id": i.id,
+                "filename": i.file_name,
+                "ope": i.File.data,
+                "size": i.File.size,
+                "datetime": i.time,
+                "experience": i.File.type,
+                "type": file_font[i.File.type]
+            }
+            info["data"].append(a)
+    info["count"] = x
+    return JsonResponse(info)
+
+
+
+
+def share_link(request,urls):
+    # 首先校验分享网址是否存在
+    share_obj = Share.objects.filter(share_path=urls)
+    # 如果不存在，跳转错误页面
+    if not share_obj:
+        return render(request, 'error.html')
+
+    return render(request, 'sharelink.html')

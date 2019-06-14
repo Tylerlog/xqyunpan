@@ -181,7 +181,7 @@ layui.use('table', function () {
         }
     );
 
-
+    // 分享选中
     $('#share').on('click', function () {
         var type = $(this).data('type');
         console.log(this.id)

@@ -1,0 +1,8 @@
+.layui-body {
+    position:unset!important;
+
+}
+.layui-layout-admin .layui-footer {
+    left:0;
+}
+

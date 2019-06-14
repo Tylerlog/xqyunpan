@@ -19,8 +19,9 @@ urlpatterns = [
     url(r'^download_pack', views.download_pack),  # 多个文件下载
     url(r'^share_page/(.*)', views.share_page),  # 生成分享
     url(r'^share_list', views.share_list),  # 分享列表
-    url(r'^share_link', views.share_link),  # 分享列表
-    url(r'^share_cancel', views.share_cancel),  # 分享列表
+    url(r'^share_link/(.*)', views.share_link),  # 分享列表
+    url(r'^share_cancel', views.share_cancel),  # 分享网址
+    url(r'^select_share_link/(.*)', views.select_share_link),  # 分享下载列表
     url(r'^delete', views.delete),
     url(r'^update', views.update),
 

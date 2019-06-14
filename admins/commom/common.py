@@ -43,4 +43,3 @@ def msm(phone, number):
     return True
 
 
-print(msm('15536582917', '213123'))
