@@ -110,6 +110,7 @@ def get_cell_yzm(request):
             print('123',num_str)
             result = common.msm(phone,num_str)
             print('验证码发送是否成功：',result)
+            msm=num_str
             if not result:
                 msm = num_str
             res = {"flag":1,"phone":phone,"yzm":num_str,'result':result,'msm':msm}

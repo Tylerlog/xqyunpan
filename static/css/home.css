@@ -34,3 +34,7 @@ content:"";
 display: block;
 clear: both;
 }
+
+.e {
+    position:absolute!important;
+}

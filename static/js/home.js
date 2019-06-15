@@ -2,10 +2,11 @@ var res_md5 = {};
 var type = false;
 // 监听a标签，把a标签请求方式改为post请求
 //注意进度条依赖 element 模块，否则无法进行正常渲染和功能性操作
-
+var width_4 = '900'
 
 if (window.screen.availWidth < '768') {
     type = true
+    width_4 = 'auto'
     // 隐藏内容
     $('.layui-bg-black').attr('hidden', 'hidden');
     $('.img').parent().attr('hidden', 'hidden');
@@ -301,7 +302,7 @@ layui.use('layer', function () { //独立版的layer无需执行这一句
 
             layer.open({
                 type: 1
-                , area: ['900px', '500px']
+                , area: [width_4 , '500px']
                 , offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
                 , id: 'layerDemo' + type //防止重复弹出
                 , content: '<div > <div class="layui-upload">\n' +
