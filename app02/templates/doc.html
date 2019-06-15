@@ -3,7 +3,7 @@
 {% block html %}
     <dd><a href="/home/all" id="all">所有文件</a></dd>
     <dd><a href="/home/pic" id="pic">图片</a></dd>
-    <dd><a href="/home/doc"  class="layui-this" id="doc">文档</a></dd>
+    <dd><a href="/home/doc" class="layui-this" id="doc">文档</a></dd>
     <dd><a href="/home/video" id="video">视频</a></dd>
     <dd><a href="/home/music" id="music">音乐</a></dd>
     <dd><a href="/home/rests" id="rests">其他</a></dd>
@@ -11,5 +11,14 @@
 
 
 {% endblock %}
+{% block html1 %}
+    <li style="padding: 0"><a href="/home/all" id="all">全部</a></li>
+    <li style="padding: 0"><a href="/home/pic" id="pic">图片</a></li>
+    <li class="layui-this" style="padding: 0"><a href="/home/doc" id="doc">文档</a></li>
+    <li style="padding: 0"><a href="/home/video" id="video">视频</a></li>
+    <li style="padding: 0"><a href="/home/share/" id="music">我的分享</a></li>
+{% endblock %}
+
+
 {% block page-js %}
 {% endblock %}

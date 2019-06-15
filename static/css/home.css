@@ -10,3 +10,27 @@
 a {
     text-decoration: none!important;
 }
+
+.b {
+    left: 0px!important;
+}
+.c {
+    float: right;
+}
+
+
+.seek {
+
+    margin-left: 100px;
+
+}
+
+.d {
+    text-align:center
+}
+
+.clearfix:after{ /*清除浮动方法2*/
+content:"";
+display: block;
+clear: both;
+}

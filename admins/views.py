@@ -109,7 +109,10 @@ def get_cell_yzm(request):
             num_str = common.create_yzm()
             print('123',num_str)
             result = common.msm(phone,num_str)
-            res = {"flag":1,"phone":phone,"yzm":num_str}
+            print('验证码发送是否成功：',result)
+            if not result:
+                msm = num_str
+            res = {"flag":1,"phone":phone,"yzm":num_str,'result':result,'msm':msm}
         return JsonResponse(res)
     else:return render(request,"error.html")
 

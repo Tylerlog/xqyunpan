@@ -34,11 +34,21 @@
 
 
 {% block content %}
+    <div  id="d">
+    <div class=" layui-tab-brief " lay-filter="docDemoTabBrief" style="padding: 0" hidden="hidden">
+        <ul class="layui-tab-title">
+            {% block html1 %}
+                <li style="padding: 0"><a href="/home/all" id="all">全部</a></li>
+                <li style="padding: 0"><a href="/home/pic" id="pic">图片</a></li>
+                <li style="padding: 0"><a href="/home/doc" id="doc">文档</a></li>
+                <li style="padding: 0"><a href="/home/video" id="video">视频</a></li>
+                <li class="layui-this"  style="padding: 0"><a href="/home/share/" id="music">我的分享</a></li>
+            {% endblock %}
+        </ul>
+        <div class="layui-tab-content" style="padding: 10px 0 0 0;"></div>
+    </div>
 
-    &emsp;
-    &emsp;
-    <button class="layui-btn" id="share_cancel_all"><i class="fa fa-close"></i> 取消分享</button>
-   &emsp;&emsp;&emsp;&emsp;
+    <button class="layui-btn" id="share_cancel_all" style="margin-left: 10px"><i class="fa fa-close"></i> 取消分享</button>
     <div class="layui-inline">
         <input class="layui-input" name="id" id="demoReload" autocomplete="off">
     </div>
@@ -46,10 +56,10 @@
     <div class="layui-form-item " pane="">
     </div>
     <table class="layui-hide " id="share" lay-filter="shares"></table>
-
+</div>
 
 {% endblock %}
 
 {% block page-js %}
-<script src="/static/js/share.js"></script>
+    <script src="/static/js/share.js"></script>
 {% endblock %}

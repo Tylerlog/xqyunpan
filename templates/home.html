@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
     <title>小强云盘</title>
     <link rel="icon" href="/static/img/ico.ico">
     <link rel="stylesheet" href="/static/layui/css/layui.css">
@@ -33,8 +34,10 @@
                     <a href="javascript:;">关于我们</a>
                     <dl class="layui-nav-child">
                         <dd><a href="">制作人：</a></dd>
-                        <dd><a href="https://www.cnblogs.com/dongxixi/" target="_blank" title="点击将访问此董希希博客">&nbsp;&nbsp; 董希希</a></dd>
-                        <dd><a href="https://www.cnblogs.com/tyler-bog/" target="_blank" title="点击将访问此李强博客">&nbsp;&nbsp; 李　强</a></dd>
+                        <dd><a href="https://www.cnblogs.com/dongxixi/" target="_blank" title="点击将访问此董希希博客">&nbsp;&nbsp;
+                            董希希</a></dd>
+                        <dd><a href="https://www.cnblogs.com/tyler-bog/" target="_blank" title="点击将访问此李强博客">&nbsp;&nbsp;
+                            李　强</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -49,7 +52,20 @@
                         <dd><a href="">安全设置</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="/admins/login/{{ user_info.id }}">退出</a></li>
+                <li class="layui-nav-item" id="exit"><a href="/admins/login/{{ user_info.id }}">退出</a></li>
+
+                <li class="layui-nav-item c">
+                    <div id="about" hidden="hidden">
+                        <a href="javascript:;">关于我们</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="">制作人：</a></dd>
+                            <dd><a href="https://www.cnblogs.com/dongxixi/" target="_blank" title="点击将访问此董希希博客">&nbsp;&nbsp;
+                                董希希</a></dd>
+                            <dd><a href="https://www.cnblogs.com/tyler-bog/" target="_blank" title="点击将访问此李强博客">&nbsp;&nbsp;
+                                李　强</a></dd>
+                        </dl>
+                    </div>
+                </li>
             </ul>
         </div>
     {% endblock %}
@@ -70,6 +86,7 @@
                                 <dd><a href="/home/video" id="video">视频</a></dd>
                                 <dd><a href="/home/music" id="music">音乐</a></dd>
                                 <dd><a href="/home/rests" id="rests">其他</a></dd>
+                                <dd><a href="/home/rests" id="rests">分享</a></dd>
                             {% endblock %}
                         </dl>
                     </li>
@@ -97,29 +114,45 @@
             </blockquote>
             {% block content %}
 
+                <div  id="d">
+                    <div class=" layui-tab-brief " lay-filter="docDemoTabBrief" style="padding: 0" hidden>
+                        <ul class="layui-tab-title">
+                            {% block html1 %}
+                            <li class="layui-this" style="padding: 0"><a href="/home/all" id="all">全部</a></li>
+                            <li style="padding: 0"><a href="/home/pic" id="pic">图片</a></li>
+                            <li style="padding: 0"><a href="/home/doc" id="doc">文档</a></li>
+                            <li style="padding: 0"><a href="/home/video" id="video">视频</a></li>
+                            <li style="padding: 0"><a href="/home/share/" id="music">我的分享</a></li>
+                            {% endblock %}
+                        </ul>
+                        <div class="layui-tab-content" style="padding: 10px 0 0 0;"></div>
+                    </div>
 
-                &emsp;&emsp;&emsp;
-                <button class="layui-btn" data-method="offset" data-type="auto"><i
-                        class="layui-icon">&#xe67c;</i> 上传文件
-                </button>
-                &emsp;
-                <button class="layui-btn" id="download"><i class="layui-icon">&#xe601;</i> 下载选中</button>
-                &emsp;
+                    <button class="layui-btn" data-method="offset" data-type="auto" id="btn-upload"
+                            style="margin-left: 10px"><i
+                            class="layui-icon">&#xe67c;</i> 上传文件
+                    </button>
 
-                &emsp;
-                <button class="layui-btn" id="del"><i class="layui-icon">&#xe640;</i> 删除选中</button>
-                &emsp;
-                <button class="layui-btn" id="share"><i class="layui-icon">&#xe641;</i> 分享选中</button>
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                <div class="layui-inline">
-                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                    <button class="layui-btn" id="download"><i class="layui-icon" id="btn-download">&#xe601;</i> 下载选中
+                    </button>
+
+
+                    <button class="layui-btn" id="del"><i class="layui-icon">&#xe640;</i> 删除选中</button>
+
+                    <button class="layui-btn" id="share"><i class="layui-icon">&#xe641;</i> 分享选中</button>
+
+                    <span id="spans">
+                        <div class="layui-inline">
+                            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                        </div>
+                        <button class="layui-btn" data-type="reload" id="seek">搜索文件名</button>
+                        &nbsp;
+                        <div class="layui-form-item " pane="">
+                        </div>
+                        {#        <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>#}
+                    </span>
                 </div>
-                <button class="layui-btn" data-type="reload" id="seek">搜索文件名</button>
-                <div class="layui-form-item " pane="">
-                </div>
-                {#        <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>#}
                 <table class="layui-hide " id="test" lay-filter="user"></table>
-
             {% endblock %}
         </div>
         <div class="layui-footer">
@@ -134,35 +167,35 @@
 <script src="/static/js/home.js"></script>
 
 {% block page-js %}
-<script>
-    //iframe窗
-
-    layer.open({
-        type: 2,
-        title: false,
-        closeBtn: 1, //不显示关闭按钮
-        shade: 0,
-        area: ['340px', '215px'],
-        offset: 'rb', //右下角弹出
-        time: 0, //2秒后自动关闭
-        anim: 2,
-
-        content: ['/title'], //iframe的url，no代表不显示滚动条
-        /*end: function () { //此处用于演示
+    <script>
+        //iframe窗
+        if (window.screen.availWidth > '768') {
             layer.open({
                 type: 2,
-                title: '很多时候，我们想最大化看，比如像这个页面。',
-                shadeClose: true,
-                shade: false,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
-                content: '//fly.layui.com/'
+                title: false,
+                closeBtn: 1, //不显示关闭按钮
+                shade: 0,
+                area: ['380px', '300px'],
+                offset: 'rb', //右下角弹出
+                time: 0, //2秒后自动关闭
+                anim: 2,
+
+                content: ['/title'], //iframe的url，no代表不显示滚动条
+                /*end: function () { //此处用于演示
+                        layer.open({
+                            type: 2,
+                            title: '很多时候，我们想最大化看，比如像这个页面。',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['893px', '600px'],
+                            content: '//fly.layui.com/'
+                        });
+                    }*/
             });
-        }*/
-    });
+        }
 
-
-</script>
+    </script>
 {% endblock %}
 </body>
 </html>

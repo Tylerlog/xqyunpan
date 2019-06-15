@@ -1,5 +1,41 @@
 
 var index
+var type=false,width=200,width_2 =80
+if (window.screen.availWidth < '768') {
+    type = true
+    width = 170
+    width_2 =40
+    // 隐藏内容
+    $('.layui-bg-black').attr('hidden', 'hidden');
+    $('.img').parent().attr('hidden', 'hidden');
+    $('#spans').attr('hidden', 'hidden');
+    $('.seek').attr('hidden', 'hidden');
+    $('#layui-layer1').attr('hidden', 'hidden');
+    $('#about').removeAttr('hidden');
+    $('.layui-tab-brief').removeAttr('hidden');
+    $('blockquote').attr('hidden', 'hidden');
+
+    // 其他
+    $('.layui-footer').attr('class', 'layui-footer b');
+    $('#d').attr({'class': 'd'});
+    $('.layui-layout-right').attr('class', 'layui-nav');
+    $('#layerDemo').attr('class', 'layui-body demoTable b');
+    $('#exit').attr('class', 'layui-nav-item c');
+    // $('.layui-layout-right').attr('class','layui-nav');
+    // 修改按钮内容
+    $('#btn-upload').text('上传');
+    $('#download').text('下载');
+    $('#del').text('删除');
+    $('#share').text('分享');
+    $('#seek').text('搜索');
+    $('#seeks').text('搜索');
+    // 删除导航条内容
+    $('.layui-layout-left').remove();
+
+
+
+}
+
 layui.use('table', function () {
     var table = layui.table;
     var $ = layui.$;
@@ -39,7 +75,7 @@ layui.use('table', function () {
             , skin: 'line'
             // , page: true //开启分页
             , cols: [[
-                {checkbox: true, fixed: true, width: 80}
+                {checkbox: true,fixed: true, width: width_2}
                 // , {field: 'id', title: 'ID', width: 80, sort: true, fixed: true}
 
                 , {
@@ -56,11 +92,11 @@ layui.use('table', function () {
                         '     <a class="layui-btn layui-btn-sm  layui-btn-primary"  lay-event="delete"><i class="layui-icon">&#xe640;</i></a>\n' +
                         '     <a class="layui-btn layui-btn-sm  layui-btn-primary" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>\n' +
                         '     </div>',
-                    width: 200
+                    width: width
                 }
-                , {field: 'size', title: '大小', width: 150, sort: true}
-                , {field: 'datetime', title: '日期', width: 230, sort: true}
-                , {field: 'experience', title: '类型', sort: true, width: 130}
+                , {field: 'size', hide: type,title: '大小', width: 150, sort: true}
+                , {field: 'datetime',hide: type, title: '日期', width: 230, sort: true}
+                , {field: 'experience',hide: type, title: '类型', sort: true, width: 130}
             ]]
             , done: function (res, curr, count) {
                 if (res["start"] == 0) {

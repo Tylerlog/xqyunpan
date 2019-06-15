@@ -1,3 +1,12 @@
+var type=false,width_1=200
+if (window.screen.availWidth<'768'){
+    type = true
+    width_1=130
+
+
+}
+
+
 layui.use('table', function () {
     var table = layui.table;
     var $ = layui.$;
@@ -18,17 +27,17 @@ layui.use('table', function () {
         // , page: true //开启分页
         , cols: [[
             {checkbox: true, fixed: true}
-            , {field: 'id', title: 'ID', width: 80, sort: true, fixed: true}
+            , {field: 'id', title: 'ID',hide:type, width: 80, sort: true, fixed: true}
             , {field: 'share_name', title: '分享名', sort: true}
-            , {field: 'share_path', title: '分享链接', width: 370, sort: true}
-            , {field: 'share_password', title: '分享密码', width: 180, sort: true}
-            , {field: 'share_time', title: '分享日期', sort: true, width: 200}
+            , {field: 'share_path', title: '分享链接',hide:type, width: 370, sort: true}
+            , {field: 'share_password', title: '分享密码',hide:type, width: 180, sort: true}
+            , {field: 'share_time', title: '分享日期', sort: true,hide:type, width: 200}
             , {
                 field: 'ope', title: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作', templet: ' ' +
                     '<div>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary"  lay-event="share_cancel">&nbsp;<i class="fa fa-close"></i>&nbsp;</a>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary"  lay-event="copy_link">&nbsp;<i class="fa fa-copy"></i>&nbsp;</a>\n' +
-                    '     </div>', width: 200
+                    '     </div>', width: width_1
             }
 
         ]]

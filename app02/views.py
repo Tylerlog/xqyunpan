@@ -24,7 +24,7 @@ def home(request):
 @common.is_login
 def all(request):
     if request.session.get("login"):
-        user_info = {"id": request.session.get("img"),'img':request.session.get("img"),'name':request.session.get("name")}
+        user_info = {"id": request.session.get("id"),'img':request.session.get("img"),'name':request.session.get("name")}
         print(user_info)
         return render(request, 'home.html',locals())
 
@@ -125,7 +125,7 @@ def file_md5_name(file, time=None):
 @common.is_login
 def upload(request):
     # 需要一个登陆的用户名字
-    user = 'admin'
+    user = request.session.get("name")
     # 需要一个file_path
     file_path = 'c:'
 
@@ -133,14 +133,16 @@ def upload(request):
     file_name = file_obj.name  # 文件名
 
     # 首先获取文件名字，看用户的同文件夹中是否有同名文件
-    name_id = User.objects.filter(name=user).get().id  # 获取操作用户的ID
+    name_id = request.session.get("id")  # 获取操作用户的ID
 
     # 获取文件名字
     get_file_name = File_Users.objects.filter(
-        Q(user_id=name_id) and ~Q(file_path=file_path) and Q(file_name=file_name)).first()
+        Q(user_id=name_id) , ~Q(file_path=file_path) , Q(file_name=file_name)).first()
+
     # 如果文件名字已存在就返回已存在
     if get_file_name:
         return JsonResponse({'code': 1, 'file_name': file_name})
+
     # ---------------------------文件无重名，继续-------------------------------------------
 
     # 判断系统后台是否有此文件，有就可以实现秒传重指向
@@ -264,9 +266,9 @@ def save(file_id, user_id, file_name, file_path):
 # 查询文件列表
 @common.is_login
 def select(request):
-    user = 'admin'
+    user = request.session.get("name")
     # 获取用户的ID
-    user_id = User.objects.filter(name=user).first().id
+    user_id = request.session.get("id")
     # table返回信息
     info = {"code": 200, "msg": "", "count": 100, "data": []}
 
@@ -329,7 +331,6 @@ def download_file(file_id):
 
 
 # 文件下载
-@common.is_login
 def download(request, data):
     # 分割名字和文件校验数据
 
@@ -425,7 +426,7 @@ def random_link(sum=10):
 def share_page(request, data):
     # 需要一个用户名
 
-    name = 'admin'
+    name = request.session.get("name")
 
     if request.method == 'POST':
         info = {}
@@ -458,9 +459,9 @@ def share_page(request, data):
 # 查询分享文件列表
 @common.is_login
 def share_list(request):
-    user = 'admin'
+    user = request.session.get("name")
     # 获取用户的ID
-    user_id = User.objects.filter(name=user).first().id
+    user_id = request.session.get("id")
     # table返回信息
     info = {"code": 200, "msg": "", "count": 100, "data": []}
 

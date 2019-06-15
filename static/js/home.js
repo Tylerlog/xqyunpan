@@ -1,6 +1,39 @@
 var res_md5 = {};
+var type = false;
 // 监听a标签，把a标签请求方式改为post请求
 //注意进度条依赖 element 模块，否则无法进行正常渲染和功能性操作
+
+
+if (window.screen.availWidth < '768') {
+    type = true
+    // 隐藏内容
+    $('.layui-bg-black').attr('hidden', 'hidden');
+    $('.img').parent().attr('hidden', 'hidden');
+    $('#spans').attr('hidden', 'hidden');
+    $('.seek').attr('hidden', 'hidden');
+    $('#about').removeAttr('hidden');
+    $('.layui-tab-brief').removeAttr('hidden');
+    $('blockquote').attr('hidden', 'hidden');
+
+    // 其他
+    $('.layui-footer').attr('class', 'layui-footer b');
+    $('#d').attr({'class': 'd'});
+    $('.layui-layout-right').attr('class', 'layui-nav');
+    $('#layerDemo').attr('class', 'layui-body demoTable b');
+    $('#exit').attr('class', 'layui-nav-item c');
+    // $('.layui-layout-right').attr('class','layui-nav');
+    // 修改按钮内容
+    $('#btn-upload').text('上传');
+    $('#download').text('下载');
+    $('#del').text('删除');
+    $('#share').text('分享');
+    $('#seek').text('搜索');
+    $('#seeks').text('搜索');
+    // 删除导航条内容
+    $('.layui-layout-left').remove();
+
+
+}
 
 layui.use('table', function () {
     var table = layui.table;
@@ -11,15 +44,16 @@ layui.use('table', function () {
         elem: '#test'
         , defaultToolbar: ['filter', 'print', 'exports']
         , url: '/home/select_file'
-        , page: {limit: 15, limits: [15, 30, 45,60]} //分页模块
-        , where:{
+
+        , page: {limit: 15, limits: [15, 30, 45, 60]} //分页模块
+        , where: {
             'type': (window.location.pathname).split('/')[2],  //使用切分去取访问的类型
         }
         , height: 'full-230'
         , skin: 'line'
         // , page: true //开启分页
         , cols: [[
-            {checkbox: true, fixed: true , width: 80}
+            {checkbox: true, fixed: true, width: 80}
             // , {field: 'id', title: 'ID', width: 80, sort: true, fixed: true}
 
             , {
@@ -29,15 +63,19 @@ layui.use('table', function () {
                 sort: true
             }
             , {
-                field: 'ope', title: '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp操作', templet: ' ' +
+                field: 'ope',
+                hide: type,
+                title: '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp操作',
+                templet: ' ' +
                     '<div><a href="/home/download/{{d.ope}}/{{d.filename}}" download  class="layui-btn layui-btn-sm  layui-btn-primary" ><i class="layui-icon">&#xe601;</i></a>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary"  lay-event="delete"><i class="layui-icon">&#xe640;</i></a>\n' +
                     '     <a class="layui-btn layui-btn-sm  layui-btn-primary" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>\n' +
-                    '     </div>', width: 200
+                    '     </div>',
+                width: 200
             }
-            , {field: 'size', title: '大小', width: 150, sort: true}
-            , {field: 'datetime', title: '日期', width: 230, sort: true}
-            , {field: 'experience', title: '类型', sort: true, width: 130}
+            , {field: 'size', title: '大小', width: 150, sort: true, hide: type}
+            , {field: 'datetime', title: '日期', width: 230, sort: true, hide: type}
+            , {field: 'experience', title: '类型', sort: true, width: 130, hide: type}
         ]]
 
 
@@ -237,7 +275,7 @@ layui.use('table', function () {
             , method: 'post'
             , where: { //设定异步数据接口的额外参数，任意设
                 filename: demoReload.val(),
-                type:(window.location.pathname).split('/')[2],  //使用切分去取访问的类型
+                type: (window.location.pathname).split('/')[2],  //使用切分去取访问的类型
             }
             // , bbb: 'yyy'
             //…
